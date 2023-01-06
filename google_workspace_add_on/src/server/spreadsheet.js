@@ -14,7 +14,7 @@ export async function fillSpreadsheet(profileName, tableItem, options) {
         throw Error(`Profile ${profileName} does not exist.`);
     }
     let deltaSharingClient = new DeltaSharingClient(profiles[profileName].profile);
-    let queryTable = deltaSharingClient.queryTable(tableItem);
+    let queryTable = deltaSharingClient.queryTable(tableItem, options.limit);
 
     // There is nothing we need to do with the protocol data.
     let protocol = queryTable[0];

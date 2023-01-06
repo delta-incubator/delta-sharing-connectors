@@ -29,8 +29,8 @@ export class DeltaSharingClient {
         return tables;
     }
 
-    queryTable(tableItem) {
-        return this.client.queryTable(tableItem.share, tableItem.schema, tableItem.name);
+    queryTable(tableItem, limitHint) {
+        return this.client.queryTable(tableItem.share, tableItem.schema, tableItem.name, limitHint);
     }
 }
 
@@ -72,12 +72,12 @@ class DeltaSharingRestClient {
         return JSON.parse(this.callEndpoint(url, 'get'));
     }
 
-    queryTable(share, schema, table) {
+    queryTable(share, schema, table, limitHint) {
         let eShare = encodeURIComponent(share);
         let eSchema = encodeURIComponent(schema);
         let eTable = encodeURIComponent(table);
         let url = `/shares/${eShare}/schemas/${eSchema}/tables/${eTable}/query`;
-        let response = this.callEndpoint(url, 'post', {});
+        let response = this.callEndpoint(url, 'post', {limitHint});
         // http://ndjson.org/
         // The last JSON row ends with a line delimiter per the spec, but to be more flexible,
         // we will check whether the last element after the split has contents or not before

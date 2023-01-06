@@ -20,8 +20,8 @@ export function listRedactedProfiles() {
 
 export function verifyProfile(profile) {
     let parsedProfile = JSON.parse(profile);
-    let fields = ['shareCredentialsVersion', 'endpoint', 'bearerToken', 'expirationTime'];
-    fields.map(field => {
+    let requiredFields = ['shareCredentialsVersion', 'endpoint', 'bearerToken'];
+    requiredFields.map(field => {
         if (!(field in parsedProfile)) {
             throw Error(`Profile is missing key ${field}`);
         }

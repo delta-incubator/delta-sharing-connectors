@@ -7,7 +7,7 @@
     "node": ">=4.2.0"
   },
   "devDependencies": {
-    "@google/clasp": "2.3.0",
+    "@google/clasp": "2.4.2",
     "@types/google-apps-script": "1.0.2",
     "browserify": "16.5.0",
     "clean-css-cli": "4.3.0",
