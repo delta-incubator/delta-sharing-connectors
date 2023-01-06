@@ -1,0 +1,31 @@
+.form-group select {
+    width: 100%;
+    text-align: left;
+}
+
+.sidebar .branding-below {
+    bottom: 56px;
+    top: 0;
+}
+
+.logo {
+    height: 27px;
+    vertical-align: middle;
+}
+
+.branding-text {
+    left: 7px;
+    position: relative;
+    top: 2px;
+}
+
+#limit {
+    width: 100px;
+}
+
+/* https://ssl.gstatic.com/docs/script/css/add-ons1.css is missing some styles */
+input[type="number"]:disabled {
+    border: 1px solid #dcdcdc;
+    color: #333;
+    opacity: .5;
+  }
