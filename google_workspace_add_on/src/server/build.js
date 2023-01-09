@@ -3,8 +3,11 @@ const { GasPlugin } = require('esbuild-gas-plugin');
 require('esbuild').build({
   entryPoints: ['src/server/index.js'],
   bundle: true,
-  // util.js requires process, which is undefined in GAS
-  define: {'process.env.NODE_DEBUG': false},
+  define: {
+    // util.js requires process, which is undefined in GAS
+    'process.env.NODE_DEBUG': false,
+    'console.assert': 'assert'
+  },
   platform: "browser",
   outfile: 'dist/bundle.js',
   plugins: [GasPlugin]

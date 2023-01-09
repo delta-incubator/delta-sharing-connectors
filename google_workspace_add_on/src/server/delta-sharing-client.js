@@ -43,7 +43,11 @@ class DeltaSharingRestClient {
         let headers = {
             'Authorization': `Bearer ${this.profile.bearerToken}`
         };
-        let payloadStr = JSON.stringify(payload);
+        // Query table requires this header as well.
+        if (method == 'post') {
+            headers['Content-Type'] = 'application/json; charset=utf-8';
+        }
+        let payloadStr = payload ? JSON.stringify(payload) : null;
         let params = {
             method,
             payload: payloadStr,

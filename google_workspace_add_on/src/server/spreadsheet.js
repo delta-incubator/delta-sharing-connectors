@@ -42,10 +42,10 @@ export async function fillSpreadsheet(profileName, tableItem, options) {
         let file = queryTable[i].file
         let reader = await ParquetReader.openUrl(UrlFetchApp.fetch, file.url);
 
-        let row = new Array(fields.length);
         let cursor = reader.getCursor();
         let record = null;
         while ((record = await cursor.next()) && (options.limit == null || numResults < options.limit)) {
+            let row = new Array(fields.length);
             for (let j = 0; j < fields.length; j++) {
                 let fieldName = fields[j].name;
                 row[j] = record[fieldName];

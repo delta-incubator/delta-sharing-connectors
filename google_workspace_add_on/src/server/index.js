@@ -8,6 +8,7 @@ global.onOpen = app.onOpen;
 global.onInstall = app.onInstall;
 global.showSidebar = app.showSidebar;
 global.include = app.include;
+global.assert = app.assert;
 
 global.listRedactedProfiles = profile.listRedactedProfiles;
 global.showAddProfilePrompt = profile.showAddProfilePrompt;
