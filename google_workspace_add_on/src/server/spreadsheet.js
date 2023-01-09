@@ -1,4 +1,4 @@
-import { ParquetReader } from '@william.chau/parquetjs-lite';
+import { ParquetReader } from 'parquetjs-lite-gas';
 import { IMPORT_LOCATIONS } from './constants';
 import { DeltaSharingClient } from './delta-sharing-client';
 import { getProfilesProperty } from './profile';
