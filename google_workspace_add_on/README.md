@@ -6,6 +6,18 @@ This Google Workspace Add-On is a Delta Sharing client that imports Delta tables
 
 TBD
 
+# Allowlisting your domain
+
+Due to Google's security policy, all URLs fetched must be allowlisted.
+Without allowlisting, you would experience the following error message in the add-on:
+
+```
+... failed because the URL has not been whitelisted in the script manifest.
+```
+
+To be allowlisted, please file a GitHub issue or create a Pull Request that allowlists the domain
+in `appscript.json` through `urlFetchWhitelist`.
+
 # Limitations
 
 ## Parquet File size

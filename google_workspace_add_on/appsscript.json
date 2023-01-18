@@ -5,7 +5,6 @@
   "exceptionLogging": "STACKDRIVER",
   "oauthScopes": [
     "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/script.container.ui",
     "https://www.googleapis.com/auth/script.external_request"
   ],
   "runtimeVersion": "V8",
@@ -18,8 +17,21 @@
       },
       "homepageTrigger": {
         "runFunction": "onHomepage"
-      }
+      },
+      "openLinkUrlPrefixes": [
+        "https://delta.io/sharing",
+        "https://docs.google.com/spreadsheets",
+        "https://github.com/delta-io/delta-sharing"
+      ]
     },
     "sheets": {}
-  }
+  },
+  "urlFetchWhitelist": [
+    "https://*.amazonaws.com/",
+    "https://*.azuredatabricks.net/",
+    "https://*.databricks.com/",
+    "https://*.delta.io/",
+    "https://*.googleapis.com/",
+    "https://*.windows.net/"
+  ]
 }

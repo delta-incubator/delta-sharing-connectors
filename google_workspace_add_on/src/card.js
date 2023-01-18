@@ -1,5 +1,5 @@
 import { IMPORT_LOCATIONS, IMPORT_LOCATIONS_FOR_DISPLAY, PROFILES_KEY } from "./constants";
-import { listRedactedProfiles, getProfilesProperty, setProfilesProperty, verifyProfile } from "./profile";
+import { listRedactedProfiles, getProfilesProperty, setProfilesProperty, verifyProfile, getAllTablesInProfile } from "./profile";
 import { fillSpreadsheet } from "./spreadsheet";
 
 export function onHomepage(e) {
@@ -277,11 +277,17 @@ export function addProfile(e, addProfileState) {
 }
 
 function getAddProfileName(e) {
+    if (!e.commonEventObject.formInputs) {
+        return '';
+    }
     let addProfileName = e.commonEventObject.formInputs.addProfileName;
     return addProfileName ? addProfileName.stringInputs.value[0] : '';
 }
 
 function getAddProfileContents(e) {
+    if (!e.commonEventObject.formInputs) {
+        return '';
+    }
     let addProfileContents = e.commonEventObject.formInputs.addProfileContents;
     return addProfileContents ? addProfileContents.stringInputs.value[0] : '';
 }
@@ -335,15 +341,18 @@ export function addProfileConfirm(e) {
 
 function getAddProfileState(e, error) {
     let state = {
-        profile: null,
-        profileContents: null,
+        profile: '',
+        profileContents: '',
         message: createErrorMessage(error)
     }
     let formInputs = e.commonEventObject.formInputs;
+    if (!formInputs) {
+        return state;
+    }
     let addProfileName = formInputs.addProfileName;
-    state.profile = addProfileName ? addProfileName.stringInputs.value[0] : null;
+    state.profile = addProfileName ? addProfileName.stringInputs.value[0] : '';
     let addProfileContents = formInputs.addProfileContents;
-    state.profileContents = addProfileContents ? addProfileContents.stringInputs.value[0] : null;
+    state.profileContents = addProfileContents ? addProfileContents.stringInputs.value[0] : '';
     return state;
 }
 
