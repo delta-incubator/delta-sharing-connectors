@@ -1,0 +1,22 @@
+{
+  "name": "delta-sharing-gas",
+  "version": "0.1.0",
+  "repository": "https://github.com/delta-incubator/delta-sharing-connectors",
+  "license": "MIT",
+  "engines": {
+    "node": ">=19.4.0"
+  },
+  "devDependencies": {
+    "@google/clasp": "^2.4.2",
+    "@types/google-apps-script": "^1.0.56",
+    "esbuild": "^0.15.11",
+    "esbuild-gas-plugin": "^0.5.0",
+    "jquery": "^3.6.3",
+    "parquetjs-lite-gas": "^0.1.2"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "./build.sh",
+    "push": "clasp push"
+  }
+}
