@@ -5,10 +5,10 @@ export class DeltaSharingClient {
 
     listShares() {
         let pageToken = null;
-        let shares = [];
+        const shares = [];
         do {
             let resp = this.client.listShares(pageToken);
-            if ('items' in resp) {
+            if (resp.hasOwnProperty('items')) {
                 shares.push(...resp.items);
             }
             pageToken = 'pageToken' in resp ? resp.pageToken : null;
@@ -18,13 +18,13 @@ export class DeltaSharingClient {
 
     listAllTables(share) {
         let pageToken = null;
-        let tables = [];
+        const tables = [];
         do {
-            let resp = this.client.listAllTables(share, pageToken);
-            if ('items' in resp) {
+            const resp = this.client.listAllTables(share, pageToken);
+            if (resp.hasOwnProperty('items')) {
                 tables.push(...resp.items);
             }
-            pageToken = 'pageToken' in resp ? resp.pageToken : null;
+            pageToken = resp.hasOwnProperty('pageToken') ? resp.pageToken : null;
         } while (pageToken && pageToken != '');
         return tables;
     }
@@ -40,15 +40,15 @@ class DeltaSharingRestClient {
     }
 
     callEndpoint(url, method, payload) {
-        let headers = {
+        const headers = {
             'Authorization': `Bearer ${this.profile.bearerToken}`
         };
         // Query table requires this header as well.
         if (method == 'post') {
             headers['Content-Type'] = 'application/json; charset=utf-8';
         }
-        let payloadStr = payload ? JSON.stringify(payload) : null;
-        let params = {
+        const payloadStr = payload ? JSON.stringify(payload) : null;
+        const params = {
             method,
             payload: payloadStr,
             headers
@@ -68,7 +68,7 @@ class DeltaSharingRestClient {
     }
 
     listAllTables(share, pageToken) {
-        let eShare = encodeURIComponent(share);
+        const eShare = encodeURIComponent(share);
         let url = `/shares/${eShare}/all-tables`
         if (pageToken) {
             url = url + `?pageToken=${encodeURIComponent(pageToken)}`;
@@ -77,11 +77,11 @@ class DeltaSharingRestClient {
     }
 
     queryTable(share, schema, table, limitHint) {
-        let eShare = encodeURIComponent(share);
-        let eSchema = encodeURIComponent(schema);
-        let eTable = encodeURIComponent(table);
-        let url = `/shares/${eShare}/schemas/${eSchema}/tables/${eTable}/query`;
-        let response = this.callEndpoint(url, 'post', {limitHint});
+        const eShare = encodeURIComponent(share);
+        const eSchema = encodeURIComponent(schema);
+        const eTable = encodeURIComponent(table);
+        const url = `/shares/${eShare}/schemas/${eSchema}/tables/${eTable}/query`;
+        const response = this.callEndpoint(url, 'post', {limitHint});
         // http://ndjson.org/
         // The last JSON row ends with a line delimiter per the spec, but to be more flexible,
         // we will check whether the last element after the split has contents or not before

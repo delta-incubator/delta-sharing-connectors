@@ -11,18 +11,18 @@ export function setProfilesProperty(profiles) {
 }
 
 export function listRedactedProfiles() {
-    let redactedProfiles = getProfilesProperty();
-    for (let [profileName, profile] of Object.entries(redactedProfiles)) {
+    const redactedProfiles = getProfilesProperty();
+    for (const [profileName, profile] of Object.entries(redactedProfiles)) {
         profile.profile.bearerToken = '[REDACTED]';
     }
     return redactedProfiles;
 }
 
 export function verifyProfile(profile) {
-    let parsedProfile = JSON.parse(profile);
-    let requiredFields = ['shareCredentialsVersion', 'endpoint', 'bearerToken'];
+    const parsedProfile = JSON.parse(profile);
+    const requiredFields = ['shareCredentialsVersion', 'endpoint', 'bearerToken'];
     requiredFields.map(field => {
-        if (!(field in parsedProfile)) {
+        if (!parsedProfile.hasOwnProperty(field)) {
             throw Error(`Profile is missing key ${field}`);
         }
     });
@@ -30,14 +30,14 @@ export function verifyProfile(profile) {
 }
 
 export function getAllTablesInProfile(profileName) {
-    let profiles = getProfilesProperty();
-    if (!(profileName in profiles)) {
+    const profiles = getProfilesProperty();
+    if (!profiles.hasOwnProperty(profileName)) {
         throw Error(`Profile ${profileName} does not exist.`);
     }
-    let deltaSharingClient = new DeltaSharingClient(profiles[profileName].profile);
-    let shares = deltaSharingClient.listShares();
-    let tables = [];
-    for (let share of shares) {
+    const deltaSharingClient = new DeltaSharingClient(profiles[profileName].profile);
+    const shares = deltaSharingClient.listShares();
+    const tables = [];
+    for (const share of shares) {
         tables.push(...deltaSharingClient.listAllTables(share.name));
     }
     return tables;

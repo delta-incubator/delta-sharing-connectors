@@ -13,7 +13,7 @@ export function onHomepage(e) {
 // In general, the design pattern is to get the state first and
 // then have the UI represent the state.
 function getInitState() {
-    let state = {
+    const state = {
         profiles: [],
         profile: null,
         tables: [],
@@ -60,26 +60,26 @@ function refreshTableState(state) {
 }
 
 function updateStateCommon(state, e) {
-    let formInputs = e.commonEventObject.formInputs;
-    let profile = formInputs.profile;
+    const formInputs = e.commonEventObject.formInputs;
+    const profile = formInputs.profile;
     state.profile = profile ? profile.stringInputs.value[0] : null;
-    let table = formInputs.table;
+    const table = formInputs.table;
     state.table = table ? table.stringInputs.value[0] : null;
     state.options.importLocation = formInputs.importLocation.stringInputs.value[0];
-    let limit = formInputs.limit
+    const limit = formInputs.limit
     state.options.limit = limit ? limit.stringInputs.value[0] : null;
     state.message = null;
 }
 
 function createHomepage(state) {
-    let builder = CardService.newCardBuilder();
+    const builder = CardService.newCardBuilder();
 
-    let profileSection = CardService.newCardSection()
+    const profileSection = CardService.newCardSection()
         .addWidget(createProfileDropdown(state))
         .addWidget(createProfileButtons(state));
     builder.addSection(profileSection);
 
-    let tableSection = CardService.newCardSection()
+    const tableSection = CardService.newCardSection()
         .addWidget(createTableDropdown(state))
         .addWidget(createImportLocationDropdown(state))
         .addWidget(createLimitTextBox(state))
@@ -102,7 +102,7 @@ function createHomepage(state) {
 }
 
 function createProfileDropdown(state) {
-    let selectionInput = CardService
+    const selectionInput = CardService
         .newSelectionInput()
         .setTitle('Profile')
         .setFieldName('profile')
@@ -144,7 +144,7 @@ function createProfileButtons(state) {
 }
 
 function createTableDropdown(state) {
-    let selectionInput = CardService
+    const selectionInput = CardService
         .newSelectionInput()
         .setTitle('Table')
         .setFieldName('table')
@@ -159,7 +159,7 @@ function createTableDropdown(state) {
 }
 
 function createImportLocationDropdown(state) {
-    let selectionInput = CardService
+    const selectionInput = CardService
         .newSelectionInput()
         .setTitle('Import Location')
         .setFieldName('importLocation')
@@ -193,7 +193,7 @@ function createTableButtons(state) {
 }
 
 export function changeProfile(e) {
-    let state = parseStateParameter(e);
+    const state = parseStateParameter(e);
     updateStateCommon(state, e);
     try {
         refreshTableState(state);
@@ -209,7 +209,7 @@ export function changeProfile(e) {
 }
 
 export function addProfile(e, addProfileState) {
-    let state = parseStateParameter(e);
+    const state = parseStateParameter(e);
 
     // If there's a addProfileState, then validation in addProfile card failed,
     // so do not update homepage state, because there's nothing in the event regarding form inputs
@@ -224,12 +224,12 @@ export function addProfile(e, addProfileState) {
         }
     }
 
-    let builder = CardService.newCardBuilder()
+    const builder = CardService.newCardBuilder()
         .setHeader(CardService
             .newCardHeader()
             .setTitle('Add Profile'));
 
-    let section = CardService
+    const section = CardService
         .newCardSection()
         .addWidget(CardService
             .newTextButton()
@@ -280,7 +280,7 @@ function getAddProfileName(e) {
     if (!e.commonEventObject.formInputs) {
         return '';
     }
-    let addProfileName = e.commonEventObject.formInputs.addProfileName;
+    const addProfileName = e.commonEventObject.formInputs.addProfileName;
     return addProfileName ? addProfileName.stringInputs.value[0] : '';
 }
 
@@ -288,22 +288,22 @@ function getAddProfileContents(e) {
     if (!e.commonEventObject.formInputs) {
         return '';
     }
-    let addProfileContents = e.commonEventObject.formInputs.addProfileContents;
+    const addProfileContents = e.commonEventObject.formInputs.addProfileContents;
     return addProfileContents ? addProfileContents.stringInputs.value[0] : '';
 }
 
 export function addProfileConfirm(e) {
-    let state = parseStateParameter(e);
+    const state = parseStateParameter(e);
 
-    let profileName = getAddProfileName(e);
-    let profileContents = getAddProfileContents(e);
+    const profileName = getAddProfileName(e);
+    const profileContents = getAddProfileContents(e);
     let profiles = null;
     try {
         if (!profileName.match(/^\S+$/)) {
             throw Error('Profile name must be non-empty and cannot contain whitespace.')
         }
         profiles = getProfilesProperty();
-        if (profileName in profiles) {
+        if (profiles.hasOwnProperty(profileName)) {
             throw Error(`Profile ${profileName} already exists.`);
         }
         profiles[profileName] = {
@@ -312,7 +312,7 @@ export function addProfileConfirm(e) {
             createdAt: new Date().getTime()
         };
     } catch (error) {
-        let addProfileState = getAddProfileState(e, error);
+        const addProfileState = getAddProfileState(e, error);
         // Simple validation failures will reuse the addProfile card.
         return CardService.newActionResponseBuilder()
             .setNavigation(CardService
@@ -340,18 +340,18 @@ export function addProfileConfirm(e) {
 }
 
 function getAddProfileState(e, error) {
-    let state = {
+    const state = {
         profile: '',
         profileContents: '',
         message: createErrorMessage(error)
     }
-    let formInputs = e.commonEventObject.formInputs;
+    const formInputs = e.commonEventObject.formInputs;
     if (!formInputs) {
         return state;
     }
-    let addProfileName = formInputs.addProfileName;
+    const addProfileName = formInputs.addProfileName;
     state.profile = addProfileName ? addProfileName.stringInputs.value[0] : '';
-    let addProfileContents = formInputs.addProfileContents;
+    const addProfileContents = formInputs.addProfileContents;
     state.profileContents = addProfileContents ? addProfileContents.stringInputs.value[0] : '';
     return state;
 }
@@ -365,7 +365,7 @@ export function addProfileCancel(e) {
 }
 
 export function removeProfile(e, removeProfileMessage) {
-    let state = parseStateParameter(e);
+    const state = parseStateParameter(e);
 
     // If there's a message, then validation in removeProfile card failed, so do not update state,
     // because there's nothing in the event regarding form inputs from the homepage.
@@ -373,12 +373,12 @@ export function removeProfile(e, removeProfileMessage) {
         updateStateCommon(state, e);
     }
 
-    let builder = CardService.newCardBuilder()
+    const builder = CardService.newCardBuilder()
         .setHeader(CardService
             .newCardHeader()
             .setTitle(`Remove Profile ${state.profile}`));
 
-    let section = CardService
+    const section = CardService
         .newCardSection()
         .addWidget(CardService
             .newTextParagraph()
@@ -411,10 +411,10 @@ export function removeProfile(e, removeProfileMessage) {
 }
 
 export function removeProfileConfirm(e) {
-    let state = parseStateParameter(e);
+    const state = parseStateParameter(e);
 
-    let profiles = getProfilesProperty();
-    if (!(state.profile in profiles)) {
+    const profiles = getProfilesProperty();
+    if (!profiles.hasOwnProperty(state.profile)) {
         return CardService.newActionResponseBuilder()
             .setNavigation(CardService
                 .newNavigation()
@@ -445,18 +445,18 @@ export function removeProfileCancel(e) {
 }
 
 export async function importTable(e) {
-    let state = parseStateParameter(e);
+    const state = parseStateParameter(e);
     updateStateCommon(state, e);
 
-    let tableParts = state.table.split('.');
-    let tableItem = {
+    const tableParts = state.table.split('.');
+    const tableItem = {
         share: tableParts[0],
         schema: tableParts[1],
         name: tableParts[2]
     }
     let url = null;
     try {
-        let options = {
+        const options = {
             importLocation: state.options.importLocation,
             limit: state.options.limit == null ? null : parseInt(state.options.limit)
         }

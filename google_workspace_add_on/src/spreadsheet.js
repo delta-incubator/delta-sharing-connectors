@@ -9,28 +9,28 @@ export async function fillSpreadsheet(profileName, tableItem, options) {
         throw Error('Limit must be an integer between 0 and 10000000 inclusive.');
     }
 
-    let profiles = getProfilesProperty();
-    if (!(profileName in profiles)) {
+    const profiles = getProfilesProperty();
+    if (!profiles.hasOwnProperty(profileName)) {
         throw Error(`Profile ${profileName} does not exist.`);
     }
-    let deltaSharingClient = new DeltaSharingClient(profiles[profileName].profile);
-    let queryTable = deltaSharingClient.queryTable(tableItem, options.limit);
+    const deltaSharingClient = new DeltaSharingClient(profiles[profileName].profile);
+    const queryTable = deltaSharingClient.queryTable(tableItem, options.limit);
 
     // There is nothing we need to do with the protocol data.
-    let protocol = queryTable[0];
+    const protocol = queryTable[0];
 
-    let metaData = queryTable[1];
-    let schema = JSON.parse(metaData.metaData.schemaString);
-    let fields = schema.fields
+    const metaData = queryTable[1];
+    const schema = JSON.parse(metaData.metaData.schemaString);
+    const fields = schema.fields
 
     // No fields.
     if (fields.length == 0) {
         return;
     }
 
-    let preparedSheetInfo = prepareSpreadsheet(options.importLocation, tableItem);
-    let sheet = preparedSheetInfo.sheet;
-    let startCell = preparedSheetInfo.startCell;
+    const preparedSheetInfo = prepareSpreadsheet(options.importLocation, tableItem);
+    const sheet = preparedSheetInfo.sheet;
+    const startCell = preparedSheetInfo.startCell;
     let currentCell = startCell;
 
     let numResults = 0;
@@ -39,15 +39,15 @@ export async function fillSpreadsheet(profileName, tableItem, options) {
     values.push(fields.map(field => field.name))
 
     for (let i = 2; i < queryTable.length && (options.limit == null || numResults < options.limit); i++) {
-        let file = queryTable[i].file
-        let reader = await ParquetReader.openUrl(UrlFetchApp.fetch, file.url);
+        const file = queryTable[i].file
+        const reader = await ParquetReader.openUrl(UrlFetchApp.fetch, file.url);
 
-        let cursor = reader.getCursor();
+        const cursor = reader.getCursor();
         let record = null;
         while ((record = await cursor.next()) && (options.limit == null || numResults < options.limit)) {
-            let row = new Array(fields.length);
+            const row = new Array(fields.length);
             for (let j = 0; j < fields.length; j++) {
-                let fieldName = fields[j].name;
+                const fieldName = fields[j].name;
                 row[j] = record[fieldName];
                 // Partition values are not in parquet files.
                 // Even if it's not in partition values, undefined is treated as an empty field in
@@ -76,7 +76,7 @@ export async function fillSpreadsheet(profileName, tableItem, options) {
 }
 
 function getAvailableSheetName(spreadsheet, baseSheetName) {
-    let sheetNames = new Set(spreadsheet.getSheets().map(sheet => sheet.getName()));
+    const sheetNames = new Set(spreadsheet.getSheets().map(sheet => sheet.getName()));
     let sheetName = baseSheetName;
     let idx = 0;
     for (; sheetNames.has(sheetName); sheetName = `${baseSheetName} (${idx})`) {
@@ -86,11 +86,11 @@ function getAvailableSheetName(spreadsheet, baseSheetName) {
 }
 
 function prepareSpreadsheet(importLocation, tableItem) {
-    let tableName = `${tableItem.share}.${tableItem.schema}.${tableItem.name}`;
+    const tableName = `${tableItem.share}.${tableItem.schema}.${tableItem.name}`;
     switch (importLocation) {
         case IMPORT_LOCATIONS.CREATE_NEW_SPREADSHEET: {
-            let spreadSheet = SpreadsheetApp.create(tableName);
-            let sheet = spreadSheet.getSheets()[0];
+            const spreadSheet = SpreadsheetApp.create(tableName);
+            const sheet = spreadSheet.getSheets()[0];
             sheet.setName(tableName);
             return {
                 sheet,
@@ -99,18 +99,18 @@ function prepareSpreadsheet(importLocation, tableItem) {
             };
         }
         case IMPORT_LOCATIONS.INSERT_NEW_SHEET: {
-            let spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-            let sheetName = getAvailableSheetName(spreadsheet, tableName);
-            let sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetName);
+            const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+            const sheetName = getAvailableSheetName(spreadsheet, tableName);
+            const sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetName);
             return {
                 sheet,
                 startCell: sheet.getRange(1, 1)
             };
         }
         case IMPORT_LOCATIONS.REPLACE_SPREADSHEET: {
-            let sheets = SpreadsheetApp.getActiveSpreadsheet().getSheets();
-            let sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet();
-            for (let sheetToDelete of sheets) {
+            const sheets = SpreadsheetApp.getActiveSpreadsheet().getSheets();
+            const sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet();
+            for (const sheetToDelete of sheets) {
                 SpreadsheetApp.getActiveSpreadsheet().deleteSheet(sheetToDelete);
             }
             sheet.setName(tableName);
@@ -120,7 +120,7 @@ function prepareSpreadsheet(importLocation, tableItem) {
             };
         }
         case IMPORT_LOCATIONS.REPLACE_CURRENT_SHEET: {
-            let sheet = SpreadsheetApp.getActiveSheet();
+            const sheet = SpreadsheetApp.getActiveSheet();
             sheet.clear();
             return {
                 sheet,
@@ -128,7 +128,7 @@ function prepareSpreadsheet(importLocation, tableItem) {
             };
         }
         case IMPORT_LOCATIONS.APPEND_TO_CURRENT_SHEET: {
-            let sheet = SpreadsheetApp.getActiveSheet();
+            const sheet = SpreadsheetApp.getActiveSheet();
             return {
                 sheet,
                 startCell: sheet.getRange(sheet.getLastRow() + 1, 1)
@@ -150,10 +150,10 @@ function fillValuesInSpreadsheet(sheet, values, fields, startCell, currentCell) 
         return;
     }
 
-    let startRowIdx = startCell.getRow();
+    const startRowIdx = startCell.getRow();
 
-    let rowIdx = currentCell.getRow();
-    let colIdx = currentCell.getColumn();
+    const rowIdx = currentCell.getRow();
+    const colIdx = currentCell.getColumn();
 
     // Clear all formats for a clean slate.
     // "General" is automatic formatting, but it is undocumented.

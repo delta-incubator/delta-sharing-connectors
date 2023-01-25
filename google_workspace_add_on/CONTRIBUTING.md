@@ -9,7 +9,8 @@ While inside the `google_workspace_add_on` directory.
 Run
 
 ```
-npm install
+yarn
+yarn global add @google/clasp
 clasp login
 mkdir dist
 clasp create --type standalone --rootDir dist/
@@ -23,11 +24,11 @@ If you want to attach to an existing project, modify `.clasp.json`.
 
 # Building
 
-Run `npm run build`.
+Run `yarn run build`.
 
 # Publishing to Local Google Apps Script Project
 
-Run `npm run push`.
+Run `yarn run push`.
 
 ## One-time flow when publishing for the first time
 
@@ -53,7 +54,7 @@ Modify `.clasp.json` (backup if necessary) to contain
 {"scriptId":"1HZUkoe3XL11X7BQqOhJBbxkDIb-ZwgZvgTS7k0EiI4_HqDC2dXAc-dTk","rootDir":"dist/"}
 ```
 
-Run `npm run push`.
+Run `yarn run push`.
 
 Go to the Google Apps Script settings for the project.
 
