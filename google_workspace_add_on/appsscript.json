@@ -30,6 +30,7 @@
     "https://*.amazonaws.com/",
     "https://*.azuredatabricks.net/",
     "https://*.chinacloudapi.cn/",
+    "https://*.cloudflarestorage.com/",
     "https://*.databricks.azure.cn/",
     "https://*.databricks.azure.us/",
     "https://*.databricks.com/",
