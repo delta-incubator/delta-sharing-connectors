@@ -1,3 +1,11 @@
 .clasp.json
 node_modules/
 dist/
+# Non-zero-installs gitignore for yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
