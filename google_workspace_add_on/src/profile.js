@@ -26,6 +26,9 @@ export function verifyProfile(profile) {
             throw Error(`Profile is missing key ${field}`);
         }
     });
+    // Verify that we can actually perform operations with the profile.
+    const deltaSharingClient = new DeltaSharingClient(parsedProfile);
+    deltaSharingClient.listShares();
     return parsedProfile;
 }
 
