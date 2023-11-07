@@ -37,3 +37,6 @@ Tests show that the limit is ~500k cells before reaching this deadline.
 The Google Workspace Add-On runs on Google servers, so the IP address from where the
 client is calling Delta Sharing APIs is one of Google's servers, not the end user's network.
 This will limit the usefulness of IP address whitelists.
+
+# Additional Disclosures
+The app complies with the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements.
