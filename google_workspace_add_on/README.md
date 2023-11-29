@@ -2,10 +2,6 @@
 
 This Google Workspace Add-On is a Delta Sharing client that imports Delta tables into Google Sheets.
 
-# Usage
-
-TBD
-
 # Allowlisting your domain
 
 Due to Google's security policy, all URLs fetched must be allowlisted.
@@ -42,3 +38,6 @@ This will limit the usefulness of IP address whitelists.
 The app complies with the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements.
 
 No data is shared with any third party sites; only credentials are sent as part of the authentication process to the third party service hosting the Delta Sharing service. Please refer to the corresponding third party service's terms of service and privacy policy.
+
+# Support
+For any issues not covered by the above sections, please file a GitHub issue or contact william.chau@databricks.com
